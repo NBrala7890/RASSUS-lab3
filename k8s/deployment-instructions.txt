@@ -1,8 +1,17 @@
-Za svaki mikroservis pokrenuti:
-./gradlew build
+Start Docker and Kubernetes.
 
-Pokrenuti skriptu za pokretanje:
-/config/start_script.sh
+Open every microservice as an IntelliJ project.
 
-Na kraju pokrenuti skriptu za zaustavljanje:
-/config/finish_script.sh
+Build Docker image for every microservice:
+./gradlew bootBuildImage
+
+Create configMaps for readings.csv and application.properties:
+kubectl create configmap readings --from-file=C:\F__A__X\PRVI\RASSUS\lab_3\niksa_brala\k8s\config\readings.csv;
+kubectl create configmap application-properties --from-file=C:\F__A__X\PRVI\RASSUS\lab_3\niksa_brala\k8s\config\application.properties;
+
+Deploy every microservice by applying YAML files:
+kubectl apply -f temperature-deployment.yaml
+kubectl apply -f humidity-deployment.yaml
+kubectl apply -f aggregator-deployment.yaml
+
+Test the functionality by sending an empty GET request to http://localhost:81/aggregation/get-aggregated-data
