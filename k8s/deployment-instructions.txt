@@ -1,0 +1,8 @@
+Za svaki mikroservis pokrenuti:
+./gradlew build
+
+Pokrenuti skriptu za pokretanje:
+/config/start_script.sh
+
+Na kraju pokrenuti skriptu za zaustavljanje:
+/config/finish_script.sh
