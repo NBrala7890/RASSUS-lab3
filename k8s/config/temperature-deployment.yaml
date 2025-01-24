@@ -33,7 +33,7 @@ spec:
               name: temperature-app-config
         volumeMounts:
           - name: readings-volume
-            mountPath: /app/data/readings.csv # Ovo je proizvoljno, tj. definiramo gdje se unutar kontejnera nalazi file
+            mountPath: /app/data/readings.csv
             subPath: readings.csv
             readOnly: true
       volumes:

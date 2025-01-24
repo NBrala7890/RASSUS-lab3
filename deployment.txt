@@ -1,0 +1,36 @@
+apiVersion: apps/v1  # Specifies the API version for Deployment (apps/v1 is stable).
+kind: Deployment  # Indicates that this resource is a Deployment.
+metadata:  # Metadata provides identifying information for the Deployment.
+  name: aggregator-microservice  # Name of the Deployment.
+  namespace: default  # Namespace in which the Deployment is created (default namespace here).
+spec:  # Specification of the Deployment.
+  replicas: 1  # Number of Pod replicas to run (only 1 instance here).
+  selector:  # Defines which Pods this Deployment manages.
+    matchLabels:  # Pods with matching labels will be managed by this Deployment.
+      app: aggregator-microservice  # Label selector for Pods.
+  template:  # Pod template used to create the managed Pods.
+    metadata:
+      labels:
+        app: aggregator-microservice  # Label applied to the Pods created by this Deployment.
+    spec:  # Specification of the Pod.
+      containers:  # List of containers to run in the Pod.
+        - name: aggregator-microservice  # Name of the container.
+          image: aggregator-microservice:0.0.1-SNAPSHOT  # Docker image to use for the container.
+          ports:
+            - containerPort: 8010  # Exposes port 8010 inside the container for communication.
+          envFrom:  # Loads environment variables from a ConfigMap.
+            - configMapRef:
+                name: aggregator-app-config  # Refers to the ConfigMap 'aggregator-app-config'.
+          volumeMounts:  # Mounts volumes into the container.
+            - name: app-properties  # Refers to a volume named 'app-properties'.
+              mountPath: /app/properties/application.properties  # Path inside the container where the volume is mounted.
+              subPath: application.properties  # Mounts only a specific file (subPath) from the volume.
+              readOnly: true  # Ensures the mounted file is read-only inside the container.
+          env:  # Defines additional environment variables.
+            - name: JAVA_OPTS  # Custom JVM options for the application.
+              value: "-Dspring.config.location=file:/app/properties/application.properties"  
+                # Specifies the location of the configuration file for the Spring application.
+      volumes:  # Defines volumes available for mounting into containers.
+        - name: app-properties  # Name of the volume.
+          configMap:
+            name: application-properties  # Refers to the ConfigMap named 'application-properties'.

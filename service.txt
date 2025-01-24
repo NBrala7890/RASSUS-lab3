@@ -1,0 +1,12 @@
+apiVersion: v1  # Specifies the API version for Service (v1 is stable).
+kind: Service  # Indicates that this resource is a Service.
+metadata:  # Metadata provides identifying information for the Service.
+  name: aggregator-app-service  # Name of the Service.
+spec:  # Specification of the Service.
+  selector:  # Matches Pods to be exposed by this Service.
+    app: aggregator-microservice  # Selects Pods with this label.
+  ports:  # Specifies the ports exposed by the Service.
+    - protocol: TCP  # Protocol used (TCP in this case).
+      port: 81  # Port exposed by the Service.
+      targetPort: 8010  # Port on the Pod that the Service forwards traffic to.
+  type: LoadBalancer  # Exposes the Service externally with a load-balanced IP address.

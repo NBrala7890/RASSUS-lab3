@@ -1,0 +1,17 @@
+apiVersion: gateway.networking.k8s.io/v1  # Specifies the API version for HTTPRoute (v1 stable API).
+kind: HTTPRoute  # Indicates that this resource is an HTTPRoute (a Gateway routing resource).
+metadata:  # Metadata provides identifying information for the HTTPRoute.
+  name: aggregator-app-gateway  # Name of the HTTPRoute.
+spec:  # Specification of the HTTPRoute.
+  parentRefs:  # References the Gateway resource that manages traffic.
+    - name: traefik-gateway  # Name of the Gateway to which this HTTPRoute is attached.
+      namespace: kube-system  # Namespace of the Gateway.
+  rules:  # Defines routing rules for HTTP requests.
+    - matches:  # Specifies how incoming requests are matched.
+        - path:  # Matches based on the request path.
+            type: PathPrefix  # Type of match (prefix match in this case).
+            value: /readings  # Requests starting with '/readings' will match this rule.
+      backendRefs:  # Specifies the backend service to route matched requests to.
+        - name: aggregator-microservice-service  # Name of the target Service for this route.
+          kind: Service  # Indicates the backend is a Service resource.
+          port: 8010  # Port on the target Service to forward the request.
